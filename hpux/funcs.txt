@@ -1,0 +1,6 @@
+function abs(){
+}
+abba(){}
+abd(){
+}
+# blah blah ()
