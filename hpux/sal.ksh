@@ -9,7 +9,7 @@ alias lsof='/usr/bin/lsof'
 alias rmi='rm -i'
 alias source='.'
 alias chenv='source cv'
-alias smc='grep "()" ${_SCR_DIR}/{start,stop}env.sh | cut -d "(" -f 1 | grep -v "^#" | cut -d " " -f 2'
+alias smc='grep "()" ${_SCR_DIR}/startenv.sh ${_SCR_DIR}/stopenv.sh | cut -d "(" -f 1 | grep -v "^#" | cut -d " " -f 2| cut -d : -f 2'
 
 
 source ${_SCR_DIR}/startenv.sh
