@@ -4,13 +4,15 @@ import ConfigParser
 import os
 import sys
 import subprocess
+import re
+import time
 
 def main():
-    print("ConfigFile="+sys.argv[1])
+    #print("ConfigFile="+sys.argv[1])
     config=openConfig(sys.argv[1])
     daemonRegistry = readDaemonsRegitry(config.get('main','DaemonsRegistry'))
     checkDaemonsRegisterStatus(config.get('main','DaemonsPid'),daemonRegistry)
-    checkDaemonsPidAlive(config.get('main','DaemonsPid'),daemonRegistry)
+    checkDaemonsPidAlive(config.get('main','DaemonsPid'),daemonRegistry,config.get('main','AppDir'))
     checkDaemonsLock(daemonRegistry)
 
 
@@ -54,7 +56,7 @@ def checkDaemonsRegisterStatus(pidFile, registry):
             print("Registered new Daemon: "+daemon_name)
 
 
-def checkDaemonsPidAlive(pidFile, registry):
+def checkDaemonsPidAlive(pidFile, registry, appdir):
     pids=openConfig(pidFile)
     for daemon_name, daemon in registry.items():
         # if pids.get(daemon_name,"pid") != '':
@@ -63,13 +65,20 @@ def checkDaemonsPidAlive(pidFile, registry):
             print(daemon_name+" -> Alive")
         except OSError:
             print("Daemon not alive")
-            pids.set(daemon_name,"pid",str(startDaemon(daemon)+1)) # +1 becouse nohup is spawning child 
+            pids.set(daemon_name,"pid",str(startDaemon(daemon,appdir))) #  
             with open(pidFile, 'w') as configfile:
                 pids.write(configfile)
 
 
-def startDaemon(daemon):
-    return subprocess.Popen('nohup {} {} {} &'.format(daemon.getPath(),daemon.getConf(),daemon.getArgs()),universal_newlines=True,shell=True,stdout=open(daemon.getLogFile(),'w+'),stderr=subprocess.STDOUT, preexec_fn=os.setpgrp).pid
+def startDaemon(daemon, appdir):
+    os.system('{}/bin/bg.ksh {} {} {} {} >> {} 2>&1'.format(appdir ,daemon.getName(),daemon.getPath(),daemon.getConf(),daemon.getArgs(),daemon.getLogFile()))
+    time.sleep(1)
+    pFile=open('/tmp/{}.pid'.format(daemon.getName()),'r')
+    pid = re.search('PID:(\d+)',pFile.read()).group(1)
+    pFile.close()
+    os.remove('/tmp/{}.pid'.format(daemon.getName()))
+    return pid
+    #return subprocess.Popen('nohup {} {} {} &'.format(daemon.getPath(),daemon.getConf(),daemon.getArgs()),universal_newlines=True,shell=True,stdout=open(daemon.getLogFile(),'w+'),stderr=subprocess.STDOUT, preexec_fn=os.setpgrp).pid
 
 def checkDaemonsLock(registry):
     pass
