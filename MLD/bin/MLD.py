@@ -69,7 +69,7 @@ def checkDaemonsPidAlive(pidFile, registry):
 
 
 def startDaemon(daemon):
-    return subprocess.Popen('nohup {} {} &'.format(daemon.getPath(),daemon.getConf()),universal_newlines=True,shell=True,stdout=open(daemon.getLogFile(),'w+'),stderr=subprocess.STDOUT, preexec_fn=os.setpgrp).pid
+    return subprocess.Popen('nohup {} {} {} &'.format(daemon.getPath(),daemon.getConf(),daemon.getArgs()),universal_newlines=True,shell=True,stdout=open(daemon.getLogFile(),'w+'),stderr=subprocess.STDOUT, preexec_fn=os.setpgrp).pid
 
 def checkDaemonsLock(registry):
     pass
