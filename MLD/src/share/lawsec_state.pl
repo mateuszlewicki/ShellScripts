@@ -7,10 +7,10 @@ use warnings;
 # my $LOGDIR="/lawtrans/a699323/logs";
 # my $LOGFIL="$LOGDIR/lschk_$ENV{'XXPDL'}";
 
-my $LAWDIR=$ENV{'LAWDIR'};
-my $secLog="$LAWDIR/system/sec.log";
-
-my @mails=qw(root@localhost mlewicki@localhost);
+#my $LAWDIR=$ENV{'LAWDIR'};
+#my $secLog="$LAWDIR/system/sec.log";
+my $secLog = $ARGV[1]
+my @mails=qw(mateusz.lewicki@atos.net);
 my $mail_list=join(" ", @mails);
 
 while(1){
