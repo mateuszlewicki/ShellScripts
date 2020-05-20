@@ -1,7 +1,0 @@
-[dummy]
-name=dummy.py
-path=/home/mlewicki/Projects/scripts/MLD/test/dummy.py
-conf=
-logfile=/home/mlewicki/Projects/scripts/MLD/test/dump.txt
-args=
-enabled=True

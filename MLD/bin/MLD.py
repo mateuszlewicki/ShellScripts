@@ -1,5 +1,5 @@
-#!/usr/bin/env python2.7
-#/opt/iexpress/python/python
+#!/opt/iexpress/python/bin/python
+#/usr/bin/env python2.7
 import ConfigParser
 import os
 import sys
@@ -64,8 +64,9 @@ def checkDaemonsPidAlive(pidFile, registry, appdir):
             os.kill(int(pids.get(daemon_name,"pid")) if pids.get(daemon_name,"pid") != '' else 9999999 ,0)
             print(daemon_name+" -> Alive")
         except OSError:
-            print("Daemon not alive")
-            pids.set(daemon_name,"pid",str(startDaemon(daemon,appdir))) #  
+            #print("Daemon not alive")
+            print(daemon_name+" -> Dead")
+            pids.set(daemon_name,"pid",str(startDaemon(daemon,appdir))) #
             with open(pidFile, 'w') as configfile:
                 pids.write(configfile)
 

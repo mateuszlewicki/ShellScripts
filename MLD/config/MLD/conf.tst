@@ -1,4 +1,0 @@
-[main]
-DaemonsRegistry=
-DaemonsPid=
-AppDir=
