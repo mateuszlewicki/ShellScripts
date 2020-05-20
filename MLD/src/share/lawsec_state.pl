@@ -1,42 +1,75 @@
 #!/usr/bin/perl
 
+
+
 use strict;
-use warnings;
+
+#use warnings;
 
 
-# my $LOGDIR="/lawtrans/a699323/logs";
-# my $LOGFIL="$LOGDIR/lschk_$ENV{'XXPDL'}";
 
-#my $LAWDIR=$ENV{'LAWDIR'};
-#my $secLog="$LAWDIR/system/sec.log";
-my $secLog = $ARGV[1]
-my $pl = $ARGV[2]
-my @mails=qw(mateusz.lewicki@atos.net);
+
+
+
+
+my $secLog = $ARGV[0];
+
+my $pl = $ARGV[1];
+
+#my @mails=qw(mateusz.lewicki@atos.net);
+
+#my @mails=qw(mlewicki@slb.com mateusz.lewicki@atos.net dcss-lawson@slb.com);
+
+my @mails=qw(mlewicki@slb.com mateusz.lewicki@atos.net);
+
 my $mail_list=join(" ", @mails);
+
+our $lastDate;
+
+
 
 while(1){
 
-  unless (-e $secLog ) {
-    my $lastSL="Lawson Security: Disabled";
-    `echo "PL: $pl\n\n$lastSL\n" | mailx -s "Lawsec" $mail_list` if ($lastSL =~ /Disabled/);}
-  else{
-
-    my $DOW=`date +%a`;
-    my $MONTH=`date +%b`; #check on HPUX
-    my $YEAR=`date +%Y`;
+    print join "","### START: ",`date +"%D %R"`;
 
     my @lastSL=`tail -6 $secLog`;
 
-    if ($lastSL[0] =~ /$DOW\s$MONTH\s\d{2}\s\d{2}:\d{2}:\d{2}\s$YEAR/){
 
-      if ($lastSL[4] =~ /Enabled/){ # TMP  return to disabled
 
-        my $out = join("\n",@lastSL);
+    if ( defined $lastDate ) {
 
-        `echo "PL: $pl\n\n$out\n" | mailx -s "Lawsec" $mail_list` unless ($ENV{'DBG_SEND_MAILS'} =~ /N|n/);
-        `echo "PL: $pl\n\n$out\n"` if ($ENV{'DBG_EXPLICIT'} =~ /Y|y/);
-      }
-    }
+        # Check if test condition is set TESTED
+	chomp(my $cifDate=$lastSL[0]);
+
+      if ($lastDate ne $cifDate ){
+
+              print "Found something... sending email\n";
+
+              my $out = join("\n",@lastSL);
+
+
+
+             `echo "PL: $pl\n\n$out\n" | mailx -s "AUTO: Lawsec State Changed" $mail_list` unless ($ENV{'DBG_SEND_MAILS'} =~ /N|n/);
+
+             #`echo "PL: $pl\n\n$out\n"` if ($ENV{'DBG_EXPLICIT'} =~ /Y|y/);
+
+	     #`echo "PL: $pl\n\n$out\n"` ;
+
+    	     chomp($lastDate=$lastSL[0]);
+        }
+
+  } else {
+
+    chomp($lastDate=$lastSL[0]);
+
+    print "init run...\n";
+
   }
+
+
+
+  print join "","### STOP: ",`date +"%D %R"`;
+
   sleep(60*5);
+
 }
