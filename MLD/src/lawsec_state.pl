@@ -16,11 +16,7 @@ my $secLog = $ARGV[0];
 
 my $pl = $ARGV[1];
 
-#my @mails=qw(mateusz.lewicki@atos.net);
-
-#my @mails=qw(mlewicki@slb.com mateusz.lewicki@atos.net dcss-lawson@slb.com);
-
-my @mails=qw(mlewicki@slb.com mateusz.lewicki@atos.net);
+my @mails=qw(mail1 mail2);
 
 my $mail_list=join(" ", @mails);
 
@@ -51,10 +47,9 @@ while(1){
 
              `echo "PL: $pl\n\n$out\n" | mailx -s "AUTO: Lawsec State Changed" $mail_list` unless ($ENV{'DBG_SEND_MAILS'} =~ /N|n/);
 
-             #`echo "PL: $pl\n\n$out\n"` if ($ENV{'DBG_EXPLICIT'} =~ /Y|y/);
+             `echo "PL: $pl\n\n$out\n"` if ($ENV{'DBG_EXPLICIT'} =~ /Y|y/);
 
-	     #`echo "PL: $pl\n\n$out\n"` ;
-
+	
     	     chomp($lastDate=$lastSL[0]);
         }
 
