@@ -19,7 +19,3 @@ cdp() {
 	cd $@
 	pwd 
 }
-
-#  base 	/1024					/1024^2
-# df . | perl -ple 's!(\d\d\d+)!($1/1024)!ge' | perl -ple 's!(\d\d\d+)!($1/1024)!ge' 
-# echo -ne "\033]0;testing\007" # test if putty tile changes
