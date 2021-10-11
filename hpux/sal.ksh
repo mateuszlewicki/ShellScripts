@@ -2,7 +2,7 @@
 
 export _LOG_DIR="${LAWDIR}/system"
 export _SRC_DIR="${LAWDIR}/${XXPDL}"
-export _SCR_DIR="/lawtrans/a699323/scripts"
+export _SCR_DIR="/scripts"
 
 
 alias lsof='/usr/bin/lsof'
