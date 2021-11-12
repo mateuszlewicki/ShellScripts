@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 
-my $LOGDIR="/lawtrans/a699323/logs";
+my $LOGDIR="/tmp/logs";
 my $LOGFIL="$LOGDIR/lschk_$ENV{'XXPDL'}";
 
 my $LAWDIR=$ENV{'LAWDIR'};
